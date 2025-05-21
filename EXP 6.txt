@@ -19,7 +19,7 @@ src/
 │   └── ImageSlider.jsx
 └── App.jsx
 
-
+npm install swiper
 ImageSlider.jsx
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
