@@ -1,0 +1,152 @@
+npm create vite@latest
+Give project name
+Select React
+Select JavaScript
+cd project name
+npm install
+Start the development server
+npm run dev
+
+//src --> app.jsx
+
+mport { useState, useEffect } from "react";
+
+function App() {
+  const [formData, setFormData] = useState({ name: "", email: "" });
+  const [submittedData, setSubmittedData] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/get")
+      .then((res) => res.json())
+      .then((data) => setSubmittedData(data))
+      .catch((err) => console.error("Fetch error:", err));
+  }, []);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const res = await fetch("http://localhost:5000/save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    if (res.ok) {
+      alert("Saved!");
+      setSubmittedData([...submittedData, formData]);
+      setFormData({ name: "", email: "" });
+    } else {
+      alert("Failed to save.");
+    }
+  };
+
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-md p-6 bg-white rounded shadow-md">
+        <h1 className="text-2xl font-bold mb-4 text-center">User Form</h1>
+        <form onSubmit={handleSubmit}>
+          <input
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            placeholder="Name"
+            required
+            className="border p-2 rounded w-full mb-2"
+          />
+          <input
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Email"
+            required
+            className="border p-2 rounded w-full mb-2"
+          />
+          <button
+            type="submit"
+            className="bg-blue-500 text-white w-full p-2 rounded"
+          >
+            Submit
+          </button>
+        </form>
+        <div className="mt-6">
+          <h2 className="text-lg font-semibold">Submitted Data</h2>
+          <ul className="bg-gray-50 p-4 mt-2 rounded">
+            {submittedData.length > 0 ? (
+              submittedData.map((item, idx) => (
+                <li key={idx} className="border-b py-2">
+                  <strong>Name:</strong> {item.name} <br />
+                  <strong>Email:</strong> {item.email}
+                </li>
+              ))
+            ) : (
+              <li>No data submitted yet.</li>
+            )}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+
+//backend -- create server.js
+const express = require("express");
+const fs = require("fs");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const app = express();
+const PORT = 5000;
+const DATA_FILE = "data.json";
+
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
+
+// Ensure data file exists
+if (!fs.existsSync(DATA_FILE)) {
+  fs.writeFileSync(DATA_FILE, "[]", "utf8");
+}
+
+// Get data
+app.get("/get", (req, res) => {
+  fs.readFile(DATA_FILE, "utf8", (err, data) => {
+    if (err) return res.status(500).json({ error: "Read error" });
+    res.json(JSON.parse(data));
+  });
+});
+
+// Save data
+app.post("/save", (req, res) => {
+  const newData = req.body;
+  fs.readFile(DATA_FILE, "utf8", (err, data) => {
+    let existing = [];
+    if (!err) {
+      try {
+        existing = JSON.parse(data);
+      } catch (e) {
+        console.error("JSON parse error:", e);
+      }
+    }
+    existing.push(newData);
+    fs.writeFile(DATA_FILE, JSON.stringify(existing, null, 2), "utf8", (err) => {
+      if (err) return res.status(500).json({ error: "Write error" });
+      res.json({ message: "Data saved successfully!" });
+    });
+  });
+});
+
+// Start server
+app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+
+//create a empty json file in backend 
+backend 
+node server.js
+
+run frontend
+//npm run dev

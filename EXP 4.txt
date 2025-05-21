@@ -1,0 +1,70 @@
+npm create vite@latest
+Give project name
+Select React
+Select JavaScript
+cd project name
+npm install
+Start the development server
+npm run dev
+
+App.jsx
+import React from "react";
+import Checker from "./Checker";
+
+function App() {
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <Checker />
+    </div>
+  );
+}
+
+export default App;
+
+create Checker.jsx
+
+import React, { useState } from "react";
+
+const EvenMessage = () => (
+  <h2 className="text-blue-600 font-semibold">You entered a positive number! 🔢</h2>
+);
+
+const OddMessage = () => (
+  <h2 className="text-purple-600 font-semibold">You entered a negative number! 🔢</h2>
+);
+
+const InvalidMessage = () => (
+  <h2 className="text-red-600 font-semibold">Please enter a valid number!</h2>
+);
+
+const Checker = () => {
+  const [number, setNumber] = useState("");
+
+  const handleChange = (e) => {
+    setNumber(e.target.value);
+  };
+
+  const isValidNumber = !isNaN(number) && number !== "";
+
+  return (
+    <div className="max-w-md mx-auto mt-10 p-6 border rounded-lg shadow-lg bg-white">
+      <h1 className="text-xl font-bold mb-4">Check the number is positive or negative</h1>
+      <input
+        type="number"
+        value={number}
+        onChange={handleChange}
+        placeholder="Enter a number"
+        className="border p-2 rounded w-full mb-4"
+      />
+
+      {/* Conditional Rendering */}
+      {isValidNumber ? (
+        Number(number) > 0 ? <EvenMessage /> : <OddMessage />
+      ) : (
+        <InvalidMessage />
+      )}
+    </div>
+  );
+};
+
+export default Checker;

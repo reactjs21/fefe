@@ -1,0 +1,89 @@
+npm create vite@latest
+Give project name
+Select React
+Select JavaScript
+cd project name
+npm install
+Start the development server
+npm run dev
+
+
+src/
+├── assets/
+│   ├── image1.jpg
+│   ├── image2.jpg
+│   ├── image3.jpg
+│   ├── image4.jpg
+│   └── image5.jpg
+├── components/
+│   └── ImageSlider.jsx
+└── App.jsx
+
+
+ImageSlider.jsx
+import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
+const ImageSlider = ({ images = [], autoplay = true, slidesPerView = 1, loop = true }) => {
+  return (
+    <Swiper
+      modules={[Navigation, Pagination, Autoplay]}
+      navigation
+      pagination={{ clickable: true }}
+      autoplay={autoplay ? { delay: 3000, disableOnInteraction: false } : false}
+      loop={loop}
+      slidesPerView={slidesPerView}
+      spaceBetween={15}
+      className="max-w-4xl mx-auto"
+    >
+      {images.map((img, index) => (
+  <SwiperSlide key={index} className="flex justify-center items-center">
+    <img
+      src={img}
+      alt={`Slide ${index + 1}`}
+      className="max-w-full max-h-64 object-contain rounded-lg shadow-lg"
+    />
+  </SwiperSlide>
+))}
+    </Swiper>
+  );
+};
+
+export default ImageSlider;
+
+
+App.js
+import React from "react";
+import ImageSlider from "./components/ImageSlider";
+
+// Example images URLs (replace these with your actual images or imports)
+import img1 from "./assets/image1.jpg";
+import img2 from "./assets/image2.jpg";
+import img3 from "./assets/image3.jpg";
+import img4 from "./assets/image4.jpg";
+import img5 from "./assets/image5.jpg";
+
+const images = [img1, img2, img3, img4, img5];
+function App() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+      <div className="w-full max-w-4xl">
+        <h1 className="text-3xl font-bold mb-6 text-center">Dynamic Image Slider</h1>
+        <ImageSlider
+          images={images}
+          autoplay={true}
+          slidesPerView={3}
+          loop={true}
+        />
+      </div>
+    </div>
+  );
+}
+
+
+export default App;
