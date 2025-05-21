@@ -154,3 +154,5 @@ node server.js
 
 run frontend
 //npm run dev
+
+node server.js
