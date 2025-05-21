@@ -9,7 +9,7 @@ npm run dev
 
 //src --> app.jsx
 
-mport { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [formData, setFormData] = useState({ name: "", email: "" });
