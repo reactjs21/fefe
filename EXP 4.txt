@@ -21,7 +21,7 @@ function App() {
 
 export default App;
 
-create Checker.jsx
+//create Checker.jsx
 
 import React, { useState } from "react";
 
