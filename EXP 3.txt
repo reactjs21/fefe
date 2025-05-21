@@ -148,7 +148,7 @@ app.post("/save", (req, res) => {
 // Start server
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
 
-//create a empty json file in backend 
+//create a empty json file in backend -- data.json
 backend 
 node server.js
 
