@@ -96,6 +96,9 @@ export default App;
 
 
 //backend -- create server.js
+cd backend
+npm install express cors body-parser
+
 const express = require("express");
 const fs = require("fs");
 const cors = require("cors");
